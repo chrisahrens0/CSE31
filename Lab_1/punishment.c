@@ -27,4 +27,6 @@ int main(){
     for(i = typo; i < lines; i = i + 1){
         printf("%s", cor);
     }
+
+    return 0;
 }
