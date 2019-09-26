@@ -9,7 +9,7 @@ int** matMult(int **a, int **b, int size){
 	for(int i = 0; i < size; i++){
 		*(res+i) = (int*)malloc(size * sizeof(int));
 		for(int j = 0; j < size; j++){
-			*(*(res+i)+j) = (*(*(a+i)+j) * *(*(b+i)+j));
+			*(*(res+i)+j) = (*(*(a+i)+j) * (*(*(b+i)+j)));
 		}
 	}
 
@@ -32,19 +32,34 @@ void printArray(int **arr, int n){
 }
 
 int main() {
-	int n = 10;
+	int n = 4;
 	int **matA, **matB, **matC;
 	// (1) Define 2 n x n arrays (matrices). 
-
-	matA = matB = (int**)malloc(n * sizeof(int*));
+	
+	matA = (int**)malloc(n * sizeof(int*));
+	matB = (int**)malloc(n * sizeof(int*));
 	for(int i = 0; i < n; i++){
-		*(matA + i) = *(matB + i) = (int*)malloc(n * sizeof(int));
+		//Initialize rows
+		*(matA + i) = (int*)malloc(n * sizeof(int));
+		*(matB + i) = (int*)malloc(n * sizeof(int));
+		for(int j = 0; j < n; j++){
+			//Populate Matrix A using pattern
+			*(*(matA+i)+j) = (2*j+(i));
+		}
+		for(int j = 0; j < n; j++){
+			//Populate Matrix B using different pattern
+			*(*(matB+i)+j) = (3*j+(2+i));
+		}
 	}
 
 	// (3) Call printArray to print out the 2 arrays here.
 	
+	printf("Matrix A: \n");
 	printArray(matA, n);
+	printf("\n");
+	printf("Matrix B: \n");
 	printArray(matB, n);
+	printf("\n");
 	
 	//(5) Call matMult to multiply the 2 arrays here.
 	
@@ -52,6 +67,7 @@ int main() {
 	
 	//(6) Call printArray to print out resulting array here.
 
+	printf("Matrix C: \n");
 	printArray(matC, n);
 
     return 0;
