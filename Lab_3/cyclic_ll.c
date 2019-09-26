@@ -8,20 +8,32 @@ typedef struct node {
 int has_cycle(node *head)
 {
 	// Your code goes here:
-  node* trace;
-  if(head->next != NULL){
-    trace = head->next;
-  } else {
+
+  if(head == NULL){
     return 0;
   }
-  while(trace->next != NULL){
-    if(trace->next == head){
-      return 1;
+
+  node* trace1;
+  node* trace2;
+  trace1 = trace2 = head;
+
+  int loop = 1;
+
+  while(loop == 1){
+    trace1 = trace1->next;
+    if(trace2->next != NULL){
+      trace2 = trace2->next->next;
     } else {
-      trace = trace->next;
+      return 0;
+    }
+    if(trace1 == NULL || trace2 == NULL){
+      return 0;
+    }
+    if(trace1 == trace2){
+      return 1;
     }
   }
-  return 0;
+
 }
 
 void test_has_cycle(void)
