@@ -9,12 +9,17 @@ int** matMult(int **a, int **b, int size){
 	for(int i = 0; i < size; i++){
 		*(res+i) = (int*)malloc(size * sizeof(int));
 		for(int j = 0; j < size; j++){
-			*(*(res+i)+j) = (*(*(a+i)+j) * (*(*(b+i)+j)));
+			// *(*(res+i)+j) = (*(*(a+i)+j) * (*(*(b+i)+j)));
+			// simple multiply across grid lines implementation, placeholder
+
+			*(*(res+i)+j) = 0; //initialize each to 0
+			for(int k = 0; k < size; k++){
+				*(*(res+i)+j) += ( *(*a+i)+k * *(*(b+k)+j));
+			}
 		}
 	}
 
 	return res;
-
 }
 
 void printArray(int **arr, int n){
