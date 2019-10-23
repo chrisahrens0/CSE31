@@ -15,15 +15,21 @@ main:	li 	$v0, 5			#scan integer, code 5
 	#beq	$t1, $t0, GreaterThanEqual
 	#beq 	$t2, $0, LessThan
 	#slt	$t2, $t1, $t0
-	#beq	$t2, $0, GreaterThanEqual		#found more efficient way, outdated code
+	#beq	$t2, $0, GreaterThanEqual		#first attempt, very inefficient
 	
 	#slt	$t2, $t1, $t0
-	#beq	$t2, $0, GreaterThanEqual		#questions 5, 6
+	#beq	$t2, $0, GreaterThanEqual		#second attempt, learned of ble and bge, oudated
 	#j	LessThan
 	
-	slt	$t2, $t0, $t1				#questions 7, 8
-	beq	$t2, $0, LessThanEqual
-	j	GreaterThan
+	#slt	$t2, $t0, $t1
+	#beq	$t2, $0, LessThanEqual
+	#j	GreaterThan
+	
+	#bge	$t1, $t0, GreaterThanEqual		#for TPS #2, 6-7
+	#j	LessThan
+	
+	ble	$t1, $t0, LessThanEqual			#for TPS #2, 8-9
+	j 	GreaterThan
 	
 	j	finish
 	

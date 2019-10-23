@@ -38,15 +38,15 @@ finish:
 	syscall
 	move 	$a0, $t1
 	li 	$v0, 1
-	syscall
+	syscall				#printing of pos_sum
 	
 	li 	$v0, 4
 	la 	$a0, neg_sum
 	syscall
 	move 	$a0, $t0
 	li 	$v0, 1
-	syscall
+	syscall				#printing of neg_sum
 	
-	li	$v0, 10
+	li	$v0, 10			#end
 	syscall
 	
