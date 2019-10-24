@@ -6,6 +6,9 @@
 // Feel free to declare any helper functions
 void printPuzzle(char** arr, int n);
 void searchPuzzle(char** arr, int n, char** list, int listSize);
+void horizontalSearch(char** arr, int n, char* word);
+void verticalSearch(char** arr, int n, char* word); 	//should do both down up, up down
+void diagonalSearch(char** arr, int n, char* word);		//should do top left to bottom right and bottom left to top right 
 
 // Main function, DO NOT MODIFY!!!	
 int main(int argc, char **argv) {
@@ -80,11 +83,58 @@ void printPuzzle(char** arr, int n){
 	// This function will print out the complete puzzle grid (arr). It must produce the output in the SAME format as the samples in the instructions.
 	// Your implementation here
 
+	for(int i = 0; i < n; i++){
+		for(int j = 0; j < n; j++){
+			printf("%c ", *(*(arr+i)+j));
+		}
+		printf("\n");
+	}
 
 }
 
 void searchPuzzle(char** arr, int n, char** list, int listSize){
 	// This function checks if arr contains words from list. If a word appears in arr, it will print out that word and then convert that word entry in arr into lower case.
 	// Your implementation here
+
+	//Horizontal Search
+	for(int i = 0; i < listSize; i++){
+		horizontalSearch(arr, n, *(list+i));
+	}
+
+
+}
+
+void horizontalSearch(char** arr, int n, char* word){
+	//basic left to right, line by line
+
+	int length = sizeof(word);
+	char* occurrence = NULL;
+
+	for(int i = 0; i < n; i++){
+		if(strstr(*(arr+i), word) != NULL){
+			occurrence = strstr(*(arr+i), word);
+		}
+	}
+
+	if(occurrence != NULL){
+		for(int i = 0; i < length; i++){
+			*(occurrence+i) = *(occurrence+i)+32;
+		}
+		printf("Word Found: %s\n", word);
+	}
+
+
+
+}
+
+void verticalSearch(char** arr, int n, char* word){
+	//both top to bottom and bottom to top
+
+
+}
+
+void diagonalSearch(char** arr, int n, char* word){
+	//both top left to bottom right and bottom left to top right
+
 
 }
