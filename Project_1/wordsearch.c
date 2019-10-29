@@ -113,6 +113,7 @@ void horizontalSearch(char** arr, int n, char* word){
 	for(int i = 0; i < n; i++){
 		if(strstr(*(arr+i), word) != NULL){
 			occurrence = strstr(*(arr+i), word);
+			printf("");
 		}
 	}
 
