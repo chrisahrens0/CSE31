@@ -6,9 +6,11 @@
 // Feel free to declare any helper functions
 void printPuzzle(char** arr, int n);
 void searchPuzzle(char** arr, int n, char** list, int listSize);
-void horizontalSearch(char** arr, int n, char* word);
-void verticalSearch(char** arr, int n, char* word); 	//should do both down up, up down
-void diagonalSearch(char** arr, int n, char* word);		//should do top left to bottom right and bottom left to top right 
+void dirSearch(char** arr, int n, char* word);
+int search(char** arr, int r, int c, int n, char* word);
+char toUpper(char c);
+char toLower(char c);
+void modifyArray(int r, int c, int dir, char** arr, int length);
 
 // Main function, DO NOT MODIFY!!!	
 int main(int argc, char **argv) {
@@ -95,47 +97,118 @@ void printPuzzle(char** arr, int n){
 void searchPuzzle(char** arr, int n, char** list, int listSize){
 	// This function checks if arr contains words from list. If a word appears in arr, it will print out that word and then convert that word entry in arr into lower case.
 	// Your implementation here
+	
 
 	//Horizontal Search
 	for(int i = 0; i < listSize; i++){
-		horizontalSearch(arr, n, *(list+i));
+		char* word = (char*)malloc(sizeof(char)*sizeof(*(list+i)));
+		for(int j = 0; j < strlen(*(list+i)); j++){
+			*(word+j) = *(*(list+i)+j);
+			// if(*(capsword+j) >= 'a' && *(capsword+j) <= 'z'){
+			// 	*(capsword+j) = *(capsword+j) - 32;
+			// }
+			//// previously used to make all caps, is now done later.
+		}
+		dirSearch(arr, n, word);
+		//printf("Searching word: %s\n", *(list+i));
 	}
 
 
 }
 
-void horizontalSearch(char** arr, int n, char* word){
-	//basic left to right, line by line
-
-	int length = sizeof(word);
-	char* occurrence = NULL;
-
-	for(int i = 0; i < n; i++){
-		if(strstr(*(arr+i), word) != NULL){
-			occurrence = strstr(*(arr+i), word);
-			printf("");
+void dirSearch(char** arr, int n, char* word){
+	for (int row = 0; row < n; row++){
+		for(int col = 0; col < n; col++){
+			//printf("%s\n", word);
+			if(search(arr, row, col, n, word) == 1){
+				//printf("(%d, %d): %s\n", row, col, word);
+				printf("Found word: %s\n", word);
+			}
 		}
 	}
 
-	if(occurrence != NULL){
-		for(int i = 0; i < length; i++){
-			*(occurrence+i) = *(occurrence+i)+32;
-		}
-		printf("Word Found: %s\n", word);
+}
+
+int search(char** arr, int r, int c, int n, char* word){
+
+	int* x = (int*)malloc(sizeof(int)*5);
+	*(x+0) = 0, *(x+1) = 1, *(x+2) = -1, *(x+3) = 1, *(x+4) = -1;
+	int* y = (int*)malloc(sizeof(int)*5);
+	*(y+0) = 1, *(y+1) = 0, *(y+2) = 0, *(y+3) = 1, *(y+4) = 1;
+
+	/*
+	0: horizontal left to right
+	1: vertical up to down
+	2: vertical down to up
+	3: horiztontal top left to bottom right
+	4: horizontal bottom left to top right
+	*/
+
+	//printf("Searching for %s...\n", word);
+
+	if( toUpper(*(*(arr+r)+c)) != toUpper(*(word+0)) ){
+		return 0;
 	}
 
 
 
+	int length = strlen(word);
+
+	//printf("length = %d\n", length);
+	//printf("word = %s\n", word);
+
+	for(int dir = 0; dir < 5; dir++){
+		int k;
+		int rd = r + *(x+dir);
+		int cd = c + *(y+dir);
+		for(k = 1; k < length; k++){
+			if(rd >= n || rd < 0 || cd >= n || cd < 0){
+				//printf("got here 1\n");
+				break;
+			}
+			if( toUpper(*(*(arr+rd)+cd)) != toUpper(*(word+k)) ){
+				//printf("got here 2\n");
+				break;
+			}
+			rd += *(x+dir);
+			cd += *(y+dir);
+		}
+		if(k == length){
+			modifyArray(r, c, dir, arr, length);
+			return 1;
+		}
+	}
+	return 0;
 }
 
-void verticalSearch(char** arr, int n, char* word){
-	//both top to bottom and bottom to top
-
-
+char toUpper(char c){
+	if(c >= 'a' && c <= 'z'){
+		return c - 32;
+	}
 }
 
-void diagonalSearch(char** arr, int n, char* word){
-	//both top left to bottom right and bottom left to top right
+char toLower(char c){
+	if(c >= 'A' && c <= 'Z'){
+		return c + 32;
+	}
+}
 
+void modifyArray(int r, int c, int dir, char** arr, int length){
 
+	/*
+	0: horizontal left to right
+	1: vertical top to bottom
+	2: vertical bottom to top
+	3: horiztontal top left to bottom right
+	4: horizontal bottom left to top right
+	*/
+
+	int* x = (int*)malloc(sizeof(int)*5);
+	*(x+0) = 0, *(x+1) = 1, *(x+2) = -1, *(x+3) = 1, *(x+4) = -1;
+	int* y = (int*)malloc(sizeof(int)*5);
+	*(y+0) = 1, *(y+1) = 0, *(y+2) = 0, *(y+3) = 1, *(y+4) = 1;
+
+	for(int i = 0; i < length; i++){
+		*(*(arr+r+(i * *(x+dir)))+c + (i * *(y+dir))) = toLower( *(*(arr+r+(i * *(x+dir)))+c + (i * *(y+dir))) );
+	}
 }
