@@ -87,7 +87,15 @@ void printPuzzle(char** arr, int n){
 
 	for(int i = 0; i < n; i++){
 		for(int j = 0; j < n; j++){
-			printf("%c ", *(*(arr+i)+j));
+			if(*(*(arr+i)+j) >= 'a' && *(*(arr+i)+j) <= 'z'){
+				printf("\033[1;31m");
+				printf("%c ", *(*(arr+i)+j));
+				printf("\033[0m");
+			} else {
+				printf("%c ", *(*(arr+i)+j));
+			}
+
+			// printf("%c ", *(*(arr+i)+j));
 		}
 		printf("\n");
 	}
