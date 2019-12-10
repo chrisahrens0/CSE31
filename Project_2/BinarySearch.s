@@ -94,23 +94,27 @@ printList:
 	#Your implementation of printList here	
 	
 	move $t1, $a0	#pass address of array as $a0
-	li $s0, 0	#print from 0th element
+	add $s0, $0, $0	#printed 0 elements
 
 printNextElement:
-	slt $t0, $s0, $a1
-	beq $t0, $zero, endPrintIter	#branches back if $s0 < $a1
-	lw $a0, 0($t1)
-	li $v0, 1
+	slt $t0, $s0, $a1	#check if 
+	beq $t0, $zero, printDone
+	
+	lw $a0, 0($t1)		#temp pointer to array
+	addi $v0, $0, 1
 	syscall
-	li $a0, 32
-	li $v0, 11
+	
+	
+	addi $v0, $0, 11		#11 = char
+	addi $a0, $0, 32		#32 ascii for space
 	syscall
+	
 	addi $t1, $t1, 4
-	addi $s0, $s0, 1
+	addi $s0, $s0, 1	#printed 1 more element
 	j printNextElement
 	
-endPrintIter:
-	li $v0, 4
+printDone:
+	addi $v0, $0, 4
 	la $a0, original_list
 	jr $ra
 	
@@ -184,10 +188,16 @@ bSearch:
 	sw $ra, 0($sp)		#put return address in stack
 	
 	bne $s3, $0, bIter
-	add $s0, $0, $0
+	li $s0, 0
 	addi $s3, $0, 1
 	
 bIter:
+	addi $sp, $sp, 12
+	sw $a0, 0($sp)
+	sw $a1, 4($sp)
+	sw $a3, 8($sp)
+	
+	
 	bgt $s0, $a1, bNotFound
 	addi $t3, $0, 4
 	add $t1, $a1, $s0
@@ -197,6 +207,13 @@ bIter:
 	lw $t2, 0($t0)
 	beq $t2, $a3, bkeyFound
 	bgt $t2, $a3, bSearchL
+	
+	#jal bSearch1
+	
+	lw $a0, 0($sp)
+	lw $a1, 4($sp)
+	lw $a3, 8($sp)
+	addi $sp, $sp, -12
 	
 	addi $s0, $t1, 1	#right side binary search
 	j bSearch
@@ -210,13 +227,13 @@ bkeyFound:
 	j bEnd
 	
 bNotFound:
-	add $v0, $0, $0		#reset return vals before ending
+	li $v0, 0		#reset return vals before ending
 bEnd:
 	sw $ra, 0($sp)
 	addi $sp, $sp, 4
 	jr $ra
 	
-bSearch2:
+bSearch1:
 	
 	# a0 is address index of sorted list
 	# $a1 gives size of array
@@ -225,8 +242,4 @@ bSearch2:
 	addi $sp, $sp, -4
 	sw $ra, 0($sp)
 	
-	bne $s3, $0, SearchLoop
-	add $s0, $0, $0
-	addi $s3, $0, 1
 	
-SearchLoop:
