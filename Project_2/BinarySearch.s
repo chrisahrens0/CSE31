@@ -183,40 +183,50 @@ bSearch:
 	addi $sp, $sp, -4
 	sw $ra, 0($sp)		#put return address in stack
 	
-	bne $s3, $0, bZero
+	bne $s3, $0, bIter
 	add $s0, $0, $0
 	addi $s3, $0, 1
 	
-bZero:
-	bgt $s0, $s1, bSetZero
+bIter:
+	bgt $s0, $a1, bNotFound
 	addi $t3, $0, 4
 	add $t1, $a1, $s0
 	sra $t1, $t1, 1
 	mul $t3, $t3, $t1
 	add $t0, $t3, $a0
 	lw $t2, 0($t0)
-	beq $t2, $a3, keyFound
+	beq $t2, $a3, bkeyFound
 	bgt $t2, $a3, bSearchL
 	
-bSearchR:
-	addi $s0, $t1, 1
+	addi $s0, $t1, 1	#right side binary search
 	j bSearch
 	
 bSearchL:
 	addi $a1, $t1, -1
-	j bSearch
+	j bSearch		#recur back to bSearch
 
-keyFound:
+bkeyFound:
 	addi $v0, $0, 1
-	j bSearchDone
+	j bEnd
 	
-bSetZero:
-	add $v0, $0, $0
-	
-bSearchDone:
+bNotFound:
+	add $v0, $0, $0		#reset return vals before ending
+bEnd:
 	sw $ra, 0($sp)
 	addi $sp, $sp, 4
 	jr $ra
 	
-	jr $ra
+bSearch2:
 	
+	# a0 is address index of sorted list
+	# $a1 gives size of array
+	# $a3 is key
+	
+	addi $sp, $sp, -4
+	sw $ra, 0($sp)
+	
+	bne $s3, $0, SearchLoop
+	add $s0, $0, $0
+	addi $s3, $0, 1
+	
+SearchLoop:
