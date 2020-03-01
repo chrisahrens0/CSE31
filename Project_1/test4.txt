@@ -1,0 +1,15 @@
+X	N	X	X	X	X	X	X	H	X	X	X	X	X	A
+X	A	X	X	X	X	X	X	A	X	X	X	X	X	I
+X	L	X	X	X	X	X	X	D	X	X	X	X	X	G
+X	Y	X	X	X	X	X	X	I	X	X	X	X	X	R
+X	R	X	X	X	X	X	X	X	X	X	X	X	X	O
+X	A	X	X	X	X	X	X	X	X	X	X	X	X	E
+A	M	X	X	X	X	X	X	X	X	X	X	X	X	G
+N	X	X	X	X	X	S	X	X	X	X	X	X	X	N
+A	X	X	X	X	X	A	X	X	X	X	X	X	X	A
+I	X	X	X	X	X	S	X	X	X	X	X	X	X	G
+S	X	X	X	X	X	N	X	X	X	X	X	X	X	I
+I	X	X	X	X	X	A	X	X	X	X	X	X	X	H
+U	X	X	X	X	X	K	X	X	X	X	X	X	X	C
+O	X	X	X	X	X	R	X	X	X	X	X	X	X	I
+L	X	X	X	X	X	A	X	X	X	X	X	X	X	M
